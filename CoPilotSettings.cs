@@ -245,13 +245,14 @@ namespace CoPilot
         #region Custom Skill
 
         public ToggleNode customEnabled = new ToggleNode(false);
-        public RangeNode<int> customTriggerRange = new RangeNode<int>(500, 100, 2000);
+        public ToggleNode customUseMousePosition = new ToggleNode(false);
+        public RangeNode<int> customTriggerRange = new RangeNode<int>(500, 10, 2000);
         public RangeNode<int> customMinAny = new RangeNode<int>(1, 0, 50);
         public RangeNode<int> customMinRare = new RangeNode<int>(0, 0, 50);
         public RangeNode<int> customMinUnique = new RangeNode<int>(0, 0, 50);
         public RangeNode<int> customHpp = new RangeNode<int>(100, 0, 100);
         public RangeNode<int> customEsp = new RangeNode<int>(0, 0, 100);
-        public RangeNode<int> customCooldown = new RangeNode<int>(4000, 1000, 10000);
+        public RangeNode<int> customCooldown = new RangeNode<int>(4000, 200, 10000);
         public HotkeyNode customKey = new HotkeyNode(Keys.T);
 
         #endregion

@@ -529,6 +529,8 @@ namespace CoPilot
                 {
                     CoPilot.instance.Settings.customEnabled.Value =
                         ImGuiExtension.Checkbox("Enabled", CoPilot.instance.Settings.customEnabled.Value);
+                    CoPilot.instance.Settings.customUseMousePosition.Value =
+                         ImGuiExtension.Checkbox("Use mouse position instead of player position", CoPilot.instance.Settings.customUseMousePosition.Value);
                     CoPilot.instance.Settings.customKey.Value = ImGuiExtension.HotkeySelector(
                         "Key: " + CoPilot.instance.Settings.customKey.Value, CoPilot.instance.Settings.customKey);
                     CoPilot.instance.Settings.customCooldown.Value =

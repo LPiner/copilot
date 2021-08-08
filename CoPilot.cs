@@ -91,49 +91,59 @@ namespace CoPilot
             return corpses.Select(corpse => Vector2.Distance(new Vector2(corpse.Pos.X, corpse.Pos.Y), new Vector2(playerPosition.X, playerPosition.Y))).Count(distance => distance <= maxDistance);
         }
 
-        private bool MonsterCheck(int range, int minAny, int minRare, int minUnique)
+        private bool MonsterCheck(int range, int minAny, int minRare, int minUnique, bool useMousePosition=false)
         {
             int any = 0, rare = 0, unique = 0;
             foreach (var monster in enemys)
+            {
+                Vector2 mobVector = new Vector2(monster.Pos.X, monster.Pos.Y);
+                Vector2 centerVector = new Vector2(playerPosition.X, playerPosition.Y);
+                if (useMousePosition)
+                {
+                    mobVector = GameController.IngameState.Camera.WorldToScreen(monster.Pos);
+                    centerVector = GetMousePosition();
+                }
                 switch (monster.Rarity)
                 {
                     case MonsterRarity.White:
-                    {
-                        if (Vector2.Distance(new Vector2(monster.Pos.X, monster.Pos.Y),
-                            new Vector2(playerPosition.X, playerPosition.Y)) <= range)
-                            any++;
-                        break;
-                    }
+                        {
+                            if (Vector2.Distance(mobVector,
+                                centerVector) <= range)
+                                any++;
+                            break;
+                        }
                     case MonsterRarity.Magic:
-                    {
-                        if (Vector2.Distance(new Vector2(monster.Pos.X, monster.Pos.Y),
-                            new Vector2(playerPosition.X, playerPosition.Y)) <= range)
-                            any++;
-                        break;
-                    }
+                        {
+                            if (Vector2.Distance(mobVector,
+                                centerVector) <= range)
+                                any++;
+                            break;
+                        }
                     case MonsterRarity.Rare:
-                    {
-                        if (Vector2.Distance(new Vector2(monster.Pos.X, monster.Pos.Y),
-                            new Vector2(playerPosition.X, playerPosition.Y)) <= range)
-                            rare++;
-                        break;
-                    }
+                        {
+                            if (Vector2.Distance(mobVector,
+                                centerVector) <= range)
+                                rare++;
+                            break;
+                        }
                     case MonsterRarity.Unique:
-                    {
-                        if (Vector2.Distance(new Vector2(monster.Pos.X, monster.Pos.Y),
-                            new Vector2(playerPosition.X, playerPosition.Y)) <= range)
-                            unique++;
-                        break;
-                    }
+                        {
+                            if (Vector2.Distance(mobVector,
+                                centerVector) <= range)
+                                unique++;
+                            break;
+                        }
                 }
+            }
 
-            if (minUnique > 0 && unique >= minUnique) return true;
+                if (minUnique > 0 && unique >= minUnique) return true;
 
-            if (minRare > 0 && rare >= minRare) return true;
+                if (minRare > 0 && rare >= minRare) return true;
 
-            if (minAny > 0 && any >= minAny) return true;
+                if (minAny > 0 && any >= minAny) return true;
 
-            return minAny == 0 && minRare == 0 && minUnique == 0;
+                return minAny == 0 && minRare == 0 && minUnique == 0;
+            
         }
 
         private Vector2 GetMousePosition()
@@ -1050,12 +1060,14 @@ namespace CoPilot
                         if (Gcd() &&
                             (DateTime.Now - lastCustom).TotalMilliseconds > Settings.customCooldown.Value &&
                             MonsterCheck(Settings.customTriggerRange, Settings.customMinAny, Settings.customMinRare,
-                                Settings.customMinUnique))
+                                Settings.customMinUnique, Settings.customUseMousePosition))
                             if (player.HPPercentage <= (float)Settings.customHpp / 100 ||
                                 player.MaxES > 0 && player.ESPercentage <
                                 (float)Settings.customEsp / 100)
                             {
                                 KeyPress(Settings.customKey);
+
+
                                 lastCustom = DateTime.Now;
                             }
                     }
